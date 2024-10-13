@@ -20,7 +20,7 @@ public class ExceptionFilter : IExceptionFilter
 		}
 	}
 
-	private void HandleProjectException(ExceptionContext context)
+	private static void HandleProjectException(ExceptionContext context)
 	{
 		switch (context.Exception)
 		{
@@ -30,12 +30,12 @@ public class ExceptionFilter : IExceptionFilter
 				context.Result = new BadRequestObjectResult(errorResponse);
 				break;
 			default:
-				// ThrowUnknownError(context);
+				ThrowUnknownError(context);
 				break;
 		}
 	}
 
-	private void ThrowUnknownError(ExceptionContext context)
+	private static void ThrowUnknownError(ExceptionContext context)
 	{
 		var errorResponse = new ResponseError("Unknown error occurred");
 		context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;

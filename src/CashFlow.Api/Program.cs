@@ -1,7 +1,8 @@
 
 using CashFlow.Api.Filters;
 using CashFlow.Api.Middleware;
-using System.Globalization;
+using CashFlow.Application;
+using CashFlow.Infrastructure;
 
 namespace CashFlow.Api
 {
@@ -11,14 +12,12 @@ namespace CashFlow.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
             builder.Services.AddControllers((options) => options.Filters.Add<ExceptionFilter>());
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            CultureInfo.CurrentUICulture = new CultureInfo("en");
+            builder.Services.AddInfraStructure();
+            builder.Services.AddApplication();
 
             var app = builder.Build();
 

@@ -1,5 +1,7 @@
 
 using CashFlow.Api.Filters;
+using CashFlow.Api.Middleware;
+using System.Globalization;
 
 namespace CashFlow.Api
 {
@@ -16,8 +18,11 @@ namespace CashFlow.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            CultureInfo.CurrentUICulture = new CultureInfo("en");
 
             var app = builder.Build();
+
+            app.UseMiddleware<CultureMiddleware>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

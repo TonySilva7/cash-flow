@@ -1,25 +1,26 @@
 ﻿using CashFlow.Communication.Requests;
+using CashFlow.Exception;
 using FluentValidation;
 
 namespace CashFlow.Application.UseCases.Expenses.Register;
-internal class RegisterExpenseValidator : AbstractValidator<RequestRegisterExpense>
+public class RegisterExpenseValidator : AbstractValidator<RequestRegisterExpense>
 {
     public RegisterExpenseValidator()
     {
         RuleFor(registerExpense => registerExpense.Title)
             .NotEmpty()
-            .WithMessage("Title is required");
+            .WithMessage(ResourceErrorMessages.TITLE_REQUIRED);
 
         RuleFor(registerExpense => registerExpense.Amount)
             .GreaterThan(0)
-            .WithMessage("Amount must be greater than zero");
+            .WithMessage(ResourceErrorMessages.AMOUNT_MUT_BE_GREATER_THAN_ZERO);
 
         RuleFor(registerExpense => registerExpense.Date)
             .LessThanOrEqualTo(DateTime.UtcNow)
-            .WithMessage("Date is required");
+            .WithMessage(ResourceErrorMessages.EXPENSES_CANNOT_FOR_THE_FUTURE);
 
         RuleFor(registerExpense => registerExpense.PaymentType)
             .IsInEnum()
-            .WithMessage("Payment type is invalid");
+            .WithMessage(ResourceErrorMessages.PAEMNT_TYPE_INVALID);
     }
 }

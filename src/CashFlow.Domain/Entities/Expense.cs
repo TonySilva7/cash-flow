@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CashFlow.Domain.Entities;
 
-[Table("Tbl_Expenses")]
+//[Table("Tbl_Expenses")]
 public class Expense
 {
     public Guid Id { get; set; }
@@ -12,6 +12,4 @@ public class Expense
     public DateTime Date { get; set; }
     public decimal Amount { get; set; }
     public PaymentType PaymentType { get; set; }
-
-
 }

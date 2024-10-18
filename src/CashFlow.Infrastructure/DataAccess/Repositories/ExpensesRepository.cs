@@ -4,8 +4,8 @@ using CashFlow.Domain.Repositories.Expenses;
 namespace CashFlow.Infrastructure.DataAccess.Repositories;
 internal class ExpensesRepository(CashFlowDbContext dbContext) : IExpensesRepository
 {
-    void IExpensesRepository.Add(Expense expense)
+    public async Task AddAsync(Expense expense)
     {
-        dbContext.Expenses.Add(expense);
+        await dbContext.Expenses.AddAsync(expense);
     }
 }

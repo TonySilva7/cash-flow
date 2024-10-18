@@ -5,31 +5,21 @@ using CashFlow.Domain.Entities;
 using CashFlow.Exception.ExceptionBase;
 using CashFlow.Domain.Repositories.Expenses;
 using CashFlow.Domain.Repositories;
+using AutoMapper;
 
 namespace CashFlow.Application.UseCases.Expenses.Register;
-public class RegisterExpenseUseCase(IExpensesRepository expensesRepository, IUnitOfWork unitOfWork) : IRegisterExpenseUseCase
+public class RegisterExpenseUseCase(IExpensesRepository expensesRepository, IUnitOfWork unitOfWork, IMapper mapper) : IRegisterExpenseUseCase
 {
-    public ResponseRegisteredExpense Execute(RequestRegisterExpense expense)
+    public async Task<ResponseRegisteredExpense> Execute(RequestRegisterExpense expense)
     {
         Validate(expense);
 
-        var entity = new Expense
-        {
-            //Id = Guid.NewGuid(),
-            Amount = expense.Amount,
-            Date = expense.Date,
-            Description = expense.Description,
-            PaymentType = (PaymentType)expense.PaymentType,
-            Title = expense.Title,
-        };
+        var entity = mapper.Map<Expense>(expense);
 
-        expensesRepository.Add(entity);
-        unitOfWork.Commit();
+        await expensesRepository.AddAsync(entity);
+        await unitOfWork.Commit();
 
-        return new ResponseRegisteredExpense
-        {
-            Title = expense.Title
-        };
+        return mapper.Map<ResponseRegisteredExpense>(entity);
     }
 
     private static void Validate(RequestRegisterExpense expense)

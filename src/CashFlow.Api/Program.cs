@@ -22,6 +22,7 @@ namespace CashFlow.Api
 
             builder.Services.AddInfraStructure(builder.Configuration);
             builder.Services.AddApplication();
+            builder.Services.AddRouting(s => s.LowercaseUrls = true);
 
             var app = builder.Build();
 

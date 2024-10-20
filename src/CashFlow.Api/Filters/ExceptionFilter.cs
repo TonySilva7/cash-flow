@@ -30,6 +30,11 @@ public class ExceptionFilter : IExceptionFilter
 				context.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
 				context.Result = new BadRequestObjectResult(errorResponse);
 				break;
+			case NotFoundException ex:
+				errorResponse = new ResponseError(ex.Message);
+				context.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+				context.Result = new NotFoundObjectResult(errorResponse);
+				break;
 			default:
 				ThrowUnknownError(context);
 				break;

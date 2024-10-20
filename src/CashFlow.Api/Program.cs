@@ -14,7 +14,11 @@ namespace CashFlow.Api
 
             builder.Services.AddControllers((options) => options.Filters.Add<ExceptionFilter>());
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new() { Title = "CashFlow.Api", Version = "v1" });
+                c.EnableAnnotations();
+            });
 
             builder.Services.AddInfraStructure(builder.Configuration);
             builder.Services.AddApplication();

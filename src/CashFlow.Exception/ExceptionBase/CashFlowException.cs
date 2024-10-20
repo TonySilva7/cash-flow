@@ -8,12 +8,12 @@ public abstract class CashFlowException : SystemException
   {
   }
 
-  public CashFlowException(string message)
+  protected CashFlowException(string message)
       : base(message)
   {
   }
 
-  public CashFlowException(string message, SystemException inner)
+  protected CashFlowException(string message, SystemException inner)
       : base(message, inner)
   {
   }

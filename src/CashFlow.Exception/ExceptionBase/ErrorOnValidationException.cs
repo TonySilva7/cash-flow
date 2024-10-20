@@ -2,13 +2,7 @@ using System;
 
 namespace CashFlow.Exception.ExceptionBase;
 
-public class ErrorOnValidationException : CashFlowException
+public class ErrorOnValidationException(List<string> errorMessages) : CashFlowException(string.Join(", ", errorMessages))
 {
-
-  public List<string> Errors { get; set; }
-
-  public ErrorOnValidationException(List<string> message)
-  {
-    Errors = message;
-  }
+  public List<string> Errors { get; set; } = errorMessages;
 }

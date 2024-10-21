@@ -9,42 +9,42 @@ namespace CashFlow.Api.Filters;
 
 public class ExceptionFilter : IExceptionFilter
 {
-	public void OnException(ExceptionContext context)
-	{
-		if (context.Exception is CashFlowException)
-		{
-			HandleProjectException(context);
-		}
-		else
-		{
-			ThrowUnknownError(context);
-		}
-	}
+    public void OnException(ExceptionContext context)
+    {
+        if (context.Exception is CashFlowException)
+        {
+            HandleProjectException(context);
+        }
+        else
+        {
+            ThrowUnknownError(context);
+        }
+    }
 
-	private static void HandleProjectException(ExceptionContext context)
-	{
-		switch (context.Exception)
-		{
-			case ErrorOnValidationException ex:
-				var errorResponse = new ResponseError(ex.Errors);
-				context.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-				context.Result = new BadRequestObjectResult(errorResponse);
-				break;
-			case NotFoundException ex:
-				errorResponse = new ResponseError(ex.Message);
-				context.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-				context.Result = new NotFoundObjectResult(errorResponse);
-				break;
-			default:
-				ThrowUnknownError(context);
-				break;
-		}
-	}
+    private static void HandleProjectException(ExceptionContext context)
+    {
+        switch (context.Exception)
+        {
+            case ErrorOnValidationException ex:
+                var errorResponse = new ResponseError(ex.Errors);
+                context.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                context.Result = new BadRequestObjectResult(errorResponse);
+                break;
+            case NotFoundException ex:
+                errorResponse = new ResponseError(ex.Message);
+                context.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+                context.Result = new NotFoundObjectResult(errorResponse);
+                break;
+            default:
+                ThrowUnknownError(context);
+                break;
+        }
+    }
 
-	private static void ThrowUnknownError(ExceptionContext context)
-	{
-		var errorResponse = new ResponseError(ResourceErrorMessages.UNKNOWN_ERROR);
-		context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-		context.Result = new ObjectResult(errorResponse);
-	}
+    private static void ThrowUnknownError(ExceptionContext context)
+    {
+        var errorResponse = new ResponseError(ResourceErrorMessages.UNKNOWN_ERROR);
+        context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        context.Result = new ObjectResult(errorResponse);
+    }
 }

@@ -8,13 +8,13 @@ namespace CashFlow.Application.UseCases.Expenses;
 
 public class GetAllExpensesUseCase(IExpensesRepository expensesRepository, IMapper mapper) : IGetAllExpensesUseCase
 {
-  public async Task<ResponseExpenses> Execute()
-  {
-    var result = await expensesRepository.GetAllAsync();
-
-    return new ResponseExpenses
+    public async Task<ResponseExpenses> Execute()
     {
-      Expenses = mapper.Map<List<ResponseShortExpense>>(result)
-    };
-  }
+        var result = await expensesRepository.GetAllAsync();
+
+        return new ResponseExpenses
+        {
+            Expenses = mapper.Map<List<ResponseShortExpense>>(result)
+        };
+    }
 }

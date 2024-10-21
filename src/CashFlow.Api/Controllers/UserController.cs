@@ -1,7 +1,9 @@
+using CashFlow.Application.UseCases.Users.Register;
 using CashFlow.Communication.Requests;
 using CashFlow.Communication.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace CashFlow.Api.Controllers
 {
@@ -13,9 +15,17 @@ namespace CashFlow.Api.Controllers
         [HttpPost]
         [Route("register")]
         [ProducesResponseType<ResponseRegisteredUser>(StatusCodes.Status201Created)]
-        public async Task<IActionResult> Register([FromBody] RequestRegisterUser user)
+        [SwaggerOperation(
+            Summary = "Register a new user",
+            Description = "Register a new user in the system",
+            OperationId = "Register",
+            Tags = new[] { "Users" }
+        )]
+        public async Task<IActionResult> Register([FromBody] RequestRegisterUser user, [FromServices] IRegisterUserUseCase useCase)
         {
-            return Created("", new ResponseRegisteredUser());
+            var response = await useCase.Execute(user);
+
+            return Created(nameof(Register), response);
         }
     }
 }

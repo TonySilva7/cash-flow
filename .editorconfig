@@ -1,0 +1,32 @@
+# Indica que esse é o arquivo raiz das configurações EditorConfig
+root = true
+
+# Aplicando as configurações para arquivos C#
+[*.cs]
+
+# Tamanho da indentação (2, 4, 8 espaços ou tabulações)
+indent_style = space
+indent_size = 4
+
+# Usar tabulações ou espaços (tab = tabulações, space = espaços)
+tab_width = 4
+
+# Definir quebra de linha (lf = \n, crlf = \r\n, cr = \r)
+end_of_line = crlf
+
+# Inserir uma nova linha no final do arquivo
+insert_final_newline = true
+
+# Configurar largura máxima de linha (ex: 100 ou 120 caracteres)
+max_line_length = 120
+
+# Definir se arquivos com final de linha misturado devem ser corrigidos
+trim_trailing_whitespace = true
+
+# Forçar as chaves a ficarem em linhas separadas (Allman style)
+csharp_new_line_before_open_brace = all
+
+# Usar var ou o tipo explícito
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = true:suggestion

@@ -5,5 +5,5 @@ namespace CashFlow.Application.UseCases.Expenses.Register;
 
 public interface IGetAllExpensesUseCase
 {
-  Task<ResponseExpenses> Execute();
+    Task<ResponseExpenses> Execute();
 }

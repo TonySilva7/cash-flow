@@ -1,4 +1,5 @@
 using CashFlow.Application.UseCases.Users.Register;
+using CashFlow.Application.UseCases.Users.SignIn;
 using CashFlow.Communication.Requests;
 using CashFlow.Communication.Responses;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +12,22 @@ namespace CashFlow.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        // create controller to sign in user
+        [HttpPost]
+        [Route("login")]
+        [ProducesResponseType<ResponseLoginUser>(StatusCodes.Status200OK)]
+        [SwaggerOperation(
+            Summary = "Sign in user",
+            Description = "Sign in user in the system",
+            OperationId = "Login",
+            Tags = ["Users"]
+        )]
+        public async Task<IActionResult> Login([FromBody] RequestLoginUser user, [FromServices] ILoginUserUseCase useCase)
+        {
+            var response = await useCase.Execute(user);
+
+            return Ok(response);
+        }
 
         [HttpPost]
         [Route("register")]

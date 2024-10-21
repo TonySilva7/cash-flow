@@ -3,6 +3,8 @@ using CashFlow.Application.UseCases.Expenses;
 using CashFlow.Application.UseCases.Expenses.GetById;
 using CashFlow.Application.UseCases.Expenses.Register;
 using CashFlow.Application.UseCases.Users.Register;
+using CashFlow.Application.UseCases.Users.SignIn;
+using CashFlow.Application.UseCases.Users.UserVerify;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CashFlow.Application;
@@ -26,5 +28,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IGetAllExpensesUseCase, GetAllExpensesUseCase>();
         services.AddScoped<IGetExpenseByIdUseCase, GetExpenseByIdUseCase>();
         services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
+        services.AddScoped<IUserVerifyUseCase, UserVerifyUseCase>();
+        services.AddScoped<ILoginUserUseCase, LoginUserUseCase>();
     }
 }

@@ -4,4 +4,6 @@ namespace CashFlow.Domain.Repositories.Expenses;
 public interface IUsersRepository
 {
     Task AddAsync(User user);
+    Task<bool> ExistsActiveUserWithIdentifierAsync(Guid identifier);
+    Task<User?> LoginAsync(string email);
 }

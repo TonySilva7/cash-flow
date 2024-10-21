@@ -2,6 +2,7 @@
 public class ResponseError
 {
     public List<string> ErrorMessage { get; set; } = [];
+    public bool TokenIsExpired { get; set; }
 
     public ResponseError(string errorMessage)
     {

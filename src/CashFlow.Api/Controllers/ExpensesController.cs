@@ -4,7 +4,7 @@ using CashFlow.Communication.Requests;
 using CashFlow.Communication.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-
+using CashFlow.Api.Attributes;
 namespace CashFlow.Api.Controllers;
 
 [Route("api/[controller]")]
@@ -19,7 +19,7 @@ public class ExpensesController : ControllerBase
         Summary = "Register a new expense",
         Description = "Register a new expense in the system",
         OperationId = "RegisterExpense",
-        Tags = new[] { "Expenses" }
+        Tags = ["Expenses"]
     )]
     public async Task<IActionResult> Register([FromServices] IRegisterExpenseUseCase useCase, [FromBody] RequestRegisterExpense expense)
     {

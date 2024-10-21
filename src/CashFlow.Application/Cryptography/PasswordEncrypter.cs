@@ -1,11 +1,9 @@
-using System;
 using System.Text;
 using System.Security.Cryptography;
-using CashFlow.Domain.Security.Cryptography;
 
 namespace CashFlow.Application.UseCases;
 
-public class PasswordEncrypter : IPasswordEncrypter
+public class PasswordEncrypter
 {
 
     public string Encrypt(string password)

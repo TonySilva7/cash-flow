@@ -36,6 +36,7 @@ public class ExpensesController : ControllerBase
         OperationId = "GetAllExpenses",
         Tags = new[] { "Expenses" }
     )]
+    [AuthenticatedUser]
     public async Task<IActionResult> GetAllExpenses([FromServices] IGetAllExpensesUseCase useCase)
     {
         var res = await useCase.Execute();

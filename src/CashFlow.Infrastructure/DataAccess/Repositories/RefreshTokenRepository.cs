@@ -12,22 +12,24 @@ internal class RefreshTokenRepository(CashFlowDbContext dbContext) : IRefreshTok
         await dbContext.RefreshTokens.AddAsync(refreshToken);
     }
 
-    public Task<RefreshToken?> GetByRefreshTokenAsync(Guid refreshToken)
+    public Task<RefreshToken?> GetByRefreshTokenAsync(string refreshToken)
     {
         return dbContext.RefreshTokens.AsNoTracking().FirstOrDefaultAsync(token => token.Value == refreshToken);
     }
 
     public async Task<RefreshToken?> GetByUserIdAsync(Guid userId)
     {
-        return await dbContext.RefreshTokens
-            .AsNoTracking()
-            // .Include(token => token.User)
-            .FirstOrDefaultAsync(refreshToken => refreshToken.UserId.Equals(userId));
+        var result = await dbContext.RefreshTokens
+            .Include(token => token.User)
+            .Where(token => token.User.UserIdentifier == userId)
+            .FirstOrDefaultAsync();
+
+        return result;
     }
 
-    public void RemoveAsync(RefreshToken token)
+    public void RemoveAsync(RefreshToken refreshToken)
     {
-        dbContext.RefreshTokens.Remove(token);
+        dbContext.RefreshTokens.Remove(refreshToken);
     }
 
     public async Task RemoveByUserIdAsync(Guid userId)

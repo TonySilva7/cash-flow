@@ -5,6 +5,7 @@ using CashFlow.Domain.Entities;
 using CashFlow.Domain.Repositories;
 using CashFlow.Domain.Repositories.Expenses;
 using CashFlow.Domain.Repositories.Tokens;
+using CashFlow.Domain.Repositories.Users;
 using CashFlow.Domain.Security.Cryptography;
 using CashFlow.Domain.Security.Tokens;
 using CashFlow.Exception.ExceptionBase;
@@ -31,12 +32,12 @@ public class LoginUserUseCase(
             throw new UnauthorizedAccessException("Usuário ou senha inválidos");
         }
 
-        var refreshValue = Guid.NewGuid();
+        var refreshValue = tokenGenerator.GenerateRefreshToken();
         var tokenValue = tokenGenerator.Generate(userEntity.UserIdentifier);
 
         var refreshToken = new RefreshToken
         {
-            UserId = userEntity.UserIdentifier,
+            UserId = userEntity.Id,
             Value = refreshValue
         };
 

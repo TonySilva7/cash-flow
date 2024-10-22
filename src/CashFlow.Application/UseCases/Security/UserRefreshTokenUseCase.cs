@@ -1,6 +1,7 @@
 using System;
 using CashFlow.Communication.Requests;
 using CashFlow.Communication.Responses;
+using CashFlow.Domain.Entities;
 using CashFlow.Domain.Repositories;
 using CashFlow.Domain.Repositories.Tokens;
 using CashFlow.Domain.Security.Tokens;
@@ -33,20 +34,28 @@ public class UserRefreshTokenUseCase(
             throw new UnauthorizedAccessException("Invalid token");
         }
 
-        refreshTokenFromDb.Value = Guid.NewGuid();
-        refreshTokenFromDb.UserId = userIdentifier;
-        refreshTokenFromDb.CreatedOn = DateTime.Now.AddHours(1);
-        var newToken = accessTokenGenerator.Generate(userIdentifier);
+        // refreshTokenFromDb.Value = accessTokenGenerator.GenerateRefreshToken();
+        // refreshTokenFromDb.UserId = userIdentifier;
+        // refreshTokenFromDb.CreatedOn = DateTime.Now.AddHours(1);
 
-        await refreshRepository.SaveRefreshTokenAsync(refreshTokenFromDb);
+        var newToken = accessTokenGenerator.Generate(refreshTokenFromDb.User.UserIdentifier);
+        var refreshTokenEntity = new RefreshToken
+        {
+            UserId = refreshTokenFromDb.User.Id,
+            Value = accessTokenGenerator.GenerateRefreshToken()
+        };
+
+
+
+        await refreshRepository.SaveRefreshTokenAsync(refreshTokenEntity);
         await unitOfWork.Commit();
 
         return new ResponseLoginUser
         {
-            UserIdentifier = refreshTokenFromDb.UserId,
+            UserIdentifier = refreshTokenEntity.User.UserIdentifier,
             Auth = new ResponseRefreshToken
             {
-                RefreshToken = refreshTokenFromDb.Value,
+                RefreshToken = refreshTokenEntity.Value,
                 Token = new ResponseToken { AccessToken = newToken }
             }
         };

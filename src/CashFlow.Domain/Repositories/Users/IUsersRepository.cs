@@ -1,6 +1,6 @@
 ﻿using CashFlow.Domain.Entities;
 
-namespace CashFlow.Domain.Repositories.Expenses;
+namespace CashFlow.Domain.Repositories.Users;
 public interface IUsersRepository
 {
     Task AddAsync(User user);

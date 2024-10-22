@@ -1,5 +1,6 @@
 using System;
 using CashFlow.Domain.Repositories.Expenses;
+using CashFlow.Domain.Repositories.Users;
 
 namespace CashFlow.Application.UseCases.Users.UserVerify;
 

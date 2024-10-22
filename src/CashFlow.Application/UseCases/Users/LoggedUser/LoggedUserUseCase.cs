@@ -3,6 +3,7 @@ using AutoMapper;
 using CashFlow.Communication.Responses;
 using CashFlow.Domain.Entities;
 using CashFlow.Domain.Repositories.Expenses;
+using CashFlow.Domain.Repositories.Users;
 using CashFlow.Domain.Security.Tokens;
 using CashFlow.Exception.ExceptionBase;
 

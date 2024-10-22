@@ -5,5 +5,5 @@ namespace CashFlow.Communication.Responses;
 public class ResponseRefreshToken
 {
     public ResponseToken Token { get; set; } = default!;
-    public Guid RefreshToken { get; set; }
+    public string RefreshToken { get; set; } = string.Empty;
 }

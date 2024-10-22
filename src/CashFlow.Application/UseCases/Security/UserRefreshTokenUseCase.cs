@@ -34,10 +34,6 @@ public class UserRefreshTokenUseCase(
             throw new UnauthorizedAccessException("Invalid token");
         }
 
-        // refreshTokenFromDb.Value = accessTokenGenerator.GenerateRefreshToken();
-        // refreshTokenFromDb.UserId = userIdentifier;
-        // refreshTokenFromDb.CreatedOn = DateTime.Now.AddHours(1);
-
         var newToken = accessTokenGenerator.Generate(refreshTokenFromDb.User.UserIdentifier);
         var refreshTokenEntity = new RefreshToken
         {

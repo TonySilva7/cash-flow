@@ -1,5 +1,6 @@
 using CashFlow.Domain.Repositories;
 using CashFlow.Domain.Repositories.Expenses;
+using CashFlow.Domain.Repositories.Tokens;
 using CashFlow.Domain.Security.Cryptography;
 using CashFlow.Domain.Security.Tokens;
 using CashFlow.Infrastructure.DataAccess;
@@ -7,6 +8,7 @@ using CashFlow.Infrastructure.DataAccess.Repositories;
 using CashFlow.Infrastructure.Security.Cryptography;
 using CashFlow.Infrastructure.Security.Tokens.Access.Generator;
 using CashFlow.Infrastructure.Security.Tokens.Access.Validator;
+using CashFlow.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +29,7 @@ public static class DependencyInjectionExtension
     {
         services.AddScoped<IExpensesRepository, ExpensesRepository>();
         services.AddScoped<IUsersRepository, UsersRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 
@@ -49,5 +52,6 @@ public static class DependencyInjectionExtension
 
         services.AddScoped<IAccessTokenGenerator, JwtTokenGenerator>(option => new JwtTokenGenerator(expirationTimeInMinutes, signingKey!));
         services.AddScoped<IAccessTokenValidator, JwtTokenValidator>(option => new JwtTokenValidator(signingKey!));
+        services.AddScoped<IUserIdentifierProvider, LoggedUserIdentifier>();
     }
 }

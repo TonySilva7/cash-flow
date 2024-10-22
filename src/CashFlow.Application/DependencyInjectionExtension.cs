@@ -2,6 +2,8 @@ using CashFlow.Application.AutoMapper;
 using CashFlow.Application.UseCases.Expenses;
 using CashFlow.Application.UseCases.Expenses.GetById;
 using CashFlow.Application.UseCases.Expenses.Register;
+using CashFlow.Application.UseCases.Security;
+using CashFlow.Application.UseCases.Users.LoggedUser;
 using CashFlow.Application.UseCases.Users.Register;
 using CashFlow.Application.UseCases.Users.SignIn;
 using CashFlow.Application.UseCases.Users.UserVerify;
@@ -30,5 +32,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
         services.AddScoped<IUserVerifyUseCase, UserVerifyUseCase>();
         services.AddScoped<ILoginUserUseCase, LoginUserUseCase>();
+        services.AddScoped<ILoggedUserUseCase, LoggedUserUseCase>();
+        services.AddScoped<IUserRefreshTokenUseCase, UserRefreshTokenUseCase>();
     }
 }

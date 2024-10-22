@@ -21,8 +21,8 @@ public class AutoMapping : Profile
         CreateMap<RequestRegisterExpense, Expense>();
 
         CreateMap<RequestRegisterUser, User>().ForMember(
-          dest => dest.Password,
-          opt => opt.Ignore()
+            dest => dest.Password,
+            opt => opt.Ignore()
         );
     }
 
@@ -33,5 +33,6 @@ public class AutoMapping : Profile
         CreateMap<Expense, ResponseExpense>();
 
         CreateMap<User, ResponseRegisteredUser>();
+        CreateMap<User, ResponseLoggedUser>();
     }
 }

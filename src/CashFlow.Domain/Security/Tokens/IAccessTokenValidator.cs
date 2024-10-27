@@ -2,5 +2,5 @@ namespace CashFlow.Domain.Security.Tokens;
 
 public interface IAccessTokenValidator
 {
-    public Guid ValidateAndGetUserIdentifier(string accessToken);
+    public (Guid identifier, List<string>? roles) ValidateAndGetUserIdentifier(string accessToken);
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Security.Claims;
 using CashFlow.Application.UseCases.Users.UserVerify;
 using CashFlow.Communication.Responses;
 using CashFlow.Domain.Security.Tokens;
@@ -8,19 +9,25 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CashFlow.Api.Filters;
 
-public class AuthenticatedUserFilter(IAccessTokenValidator accessTokenValidator, IUserVerifyUseCase verifyUseCase) : IAsyncAuthorizationFilter
+public class AuthenticatedUserFilter(IAccessTokenValidator accessTokenValidator, IUserVerifyUseCase verifyUseCase, string[] requiredRole) : IAsyncAuthorizationFilter
 {
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {
         try
         {
             var token = GetTokenOnRequest(context);
-            var userIdentifier = accessTokenValidator.ValidateAndGetUserIdentifier(token);
+
+            (var userIdentifier, var roles) = accessTokenValidator.ValidateAndGetUserIdentifier(token);
             var exists = await verifyUseCase.VerifyUser(userIdentifier);
 
             if (!exists)
             {
-                throw new UnauthorizedAccessException("Usuário não autorizado!");
+                throw new UnauthorizedAccessException("Usuário não encontrado!");
+            }
+
+            if (requiredRole.Length > 0 && roles != null && !roles.Intersect(requiredRole).Any())
+            {
+                context.Result = new ObjectResult(new ResponseError("Usuário não autorizado!")) { StatusCode = 403 };
             }
         }
         catch (SecurityTokenExpiredException)

@@ -34,9 +34,9 @@ public class ExpensesController : ControllerBase
         Summary = "Get all expenses",
         Description = "Get all expenses registered in the system",
         OperationId = "GetAllExpenses",
-        Tags = new[] { "Expenses" }
+        Tags = ["Expenses"]
     )]
-    [AuthenticatedUser]
+    [AuthenticatedUser(["Vendedor", "Admin"])]
     public async Task<IActionResult> GetAllExpenses([FromServices] IGetAllExpensesUseCase useCase)
     {
         var res = await useCase.Execute();
@@ -54,7 +54,7 @@ public class ExpensesController : ControllerBase
         Summary = "Get an expense by id",
         Description = "Get an expense by id registered in the system",
         OperationId = "GetExpenseById",
-        Tags = new[] { "Expenses" }
+        Tags = ["Expenses"]
     )]
     public async Task<IActionResult> GetExpenseById([FromServices] IGetExpenseByIdUseCase useCase, [FromRoute] Guid id)
     {

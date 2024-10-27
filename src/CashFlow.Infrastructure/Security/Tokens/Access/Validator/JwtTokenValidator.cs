@@ -9,7 +9,7 @@ namespace CashFlow.Infrastructure.Security.Tokens.Access.Validator
     public class JwtTokenValidator(string signingKey) : JwtTokenHanlder, IAccessTokenValidator
     {
         // Método público que valida o token JWT e retorna o identificador do usuário (Guid)
-        public Guid ValidateAndGetUserIdentifier(string accessToken)
+        public (Guid identifier, List<string>? roles) ValidateAndGetUserIdentifier(string accessToken)
         {
             // Parâmetros de validação do token, usados pelo validador de tokens JWT
             var validationParameter = new TokenValidationParameters
@@ -21,7 +21,7 @@ namespace CashFlow.Infrastructure.Security.Tokens.Access.Validator
                 ValidateIssuer = false,
 
                 // Descomente para validar o tempo de vida do token e a chave de assinatura, se necessário
-                // ValidateLifetime = true,
+                ValidateLifetime = true,
                 // ValidateIssuerSigningKey = true,
 
                 // Define a chave de assinatura usada para validar a autenticidade do token
@@ -41,10 +41,12 @@ namespace CashFlow.Infrastructure.Security.Tokens.Access.Validator
             var principal = tokenHandler.ValidateToken(accessToken, validationParameter, out var securityToken);
 
             // Busca a claim que contém o ID do usuário (assumido estar no ClaimTypes.Sid)
-            var userIdentifier = principal.Claims.First(claim => claim.Type == ClaimTypes.Sid).Value;
+            var identifier = principal.Claims.First(claim => claim.Type == ClaimTypes.Sid).Value;
 
-            // Converte o ID do usuário de string para Guid e o retorna
-            return Guid.Parse(userIdentifier);
+            // Obtém a lista de roles do usuário
+            var userRoles = principal.Claims.Where(claim => claim.Type == ClaimTypes.Role).Select(claim => claim.Value);
+
+            return (Guid.Parse(identifier), userRoles?.ToList());
         }
     }
 }

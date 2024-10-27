@@ -1,6 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;  // Biblioteca para manipulação de tokens JWT
 using System.Security.Claims;  // Para lidar com declarações (claims) em tokens
-using System.Text;  // Para conversão de strings em bytes (usado na chave de segurança)
 using CashFlow.Domain.Security.Tokens;
 using Microsoft.IdentityModel.Tokens;  // Classes e métodos para criptografia de tokens
 
@@ -12,8 +11,12 @@ public class JwtTokenGenerator(uint expirationTimeInMinutes, string signingKey) 
     // Método público para gerar um token JWT, recebendo o ID do usuário como identificador
     public string Generate(Guid userIdentifier)
     {
-        var claimIdentifier = new Claim(ClaimTypes.Sid, userIdentifier.ToString());
-        List<Claim> claims = [claimIdentifier];
+        // vc pode usar tbm `ClaimTypes.Name` para username, ou `ClaimTypes.Role` para roles
+        List<Claim> claims = [
+            new Claim(ClaimTypes.Sid, userIdentifier.ToString()),
+            new Claim(ClaimTypes.Role, "Admin"),
+            new Claim(ClaimTypes.Role, "User")
+        ];
 
         // Descrição do token, onde definimos sua expiração, credenciais e claims
         var tokenDescriptor = new SecurityTokenDescriptor

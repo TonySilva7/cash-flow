@@ -5,7 +5,8 @@ namespace CashFlow.Api.Attributes;
 
 public class AuthenticatedUserAttribute : TypeFilterAttribute
 {
-    public AuthenticatedUserAttribute() : base(typeof(AuthenticatedUserFilter))
+    public AuthenticatedUserAttribute(params string[] roles) : base(typeof(AuthenticatedUserFilter))
     {
+        Arguments = [roles];
     }
 }

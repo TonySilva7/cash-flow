@@ -5,6 +5,8 @@ using CashFlow.Communication.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using CashFlow.Api.Attributes;
+using CashFlow.Application.UseCases.Expenses.Delete;
+using CashFlow.Application.UseCases.Expenses.Update;
 namespace CashFlow.Api.Controllers;
 
 [Route("api/[controller]")]
@@ -21,7 +23,7 @@ public class ExpensesController : ControllerBase
         OperationId = "RegisterExpense",
         Tags = ["Expenses"]
     )]
-    public async Task<IActionResult> Register([FromServices] IRegisterExpenseUseCase useCase, [FromBody] RequestRegisterExpense expense)
+    public async Task<IActionResult> Register([FromServices] IRegisterExpenseUseCase useCase, [FromBody] RequestExpense expense)
     {
         var res = await useCase.Execute(expense);
         return Created(string.Empty, res);
@@ -63,5 +65,44 @@ public class ExpensesController : ControllerBase
         if (res != null)
             return Ok(res);
         return NotFound();
+    }
+
+
+
+    [HttpDelete]
+    [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType<ResponseError>(StatusCodes.Status404NotFound)]
+    [SwaggerOperation(
+        Summary = "Delete an expense by id",
+        Description = "Delete an expense by id registered in the system",
+        OperationId = "DeleteExpenseById",
+        Tags = ["Expenses"]
+    )]
+    public async Task<IActionResult> DeleteExpense([FromServices] IDeleteExpenseUseCase useCase, [FromRoute] Guid id)
+    {
+        await useCase.Execute(id);
+        return NoContent();
+    }
+
+
+    [HttpPut]
+    [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType<ResponseError>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ResponseError>(StatusCodes.Status404NotFound)]
+    [SwaggerOperation(
+        Summary = "Update an expense by id",
+        Description = "Update an expense by id registered in the system",
+        OperationId = "UpdateExpenseById",
+        Tags = ["Expenses"]
+    )]
+    public async Task<IActionResult> UpdateExpense(
+        [FromServices] IUpdateExpenseUseCase useCase,
+        [FromRoute] Guid id,
+        [FromBody] RequestExpense expense)
+    {
+        await useCase.Execute(id, expense);
+        return NoContent();
     }
 }

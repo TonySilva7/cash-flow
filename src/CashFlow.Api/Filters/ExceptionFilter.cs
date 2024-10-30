@@ -23,22 +23,11 @@ public class ExceptionFilter : IExceptionFilter
 
     private static void HandleProjectException(ExceptionContext context)
     {
-        switch (context.Exception)
-        {
-            case ErrorOnValidationException ex:
-                var errorResponse = new ResponseError(ex.Errors);
-                context.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                context.Result = new BadRequestObjectResult(errorResponse);
-                break;
-            case NotFoundException ex:
-                errorResponse = new ResponseError(ex.Message);
-                context.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-                context.Result = new NotFoundObjectResult(errorResponse);
-                break;
-            default:
-                ThrowUnknownError(context);
-                break;
-        }
+        var cashflowException = context.Exception as CashFlowException;
+        var errorResponse = new ResponseError(cashflowException!.GetErrors());
+
+        context.HttpContext.Response.StatusCode = cashflowException.StatuCode;
+        context.Result = new ObjectResult(errorResponse);
     }
 
     private static void ThrowUnknownError(ExceptionContext context)

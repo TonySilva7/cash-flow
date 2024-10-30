@@ -8,9 +8,9 @@ using CashFlow.Domain.Repositories;
 using AutoMapper;
 
 namespace CashFlow.Application.UseCases.Expenses.Register;
-public class RegisterExpenseUseCase(IExpensesRepository expensesRepository, IUnitOfWork unitOfWork, IMapper mapper) : IRegisterExpenseUseCase
+public class RegisterExpenseUseCase(IExpensesWriteOnlyRepository expensesRepository, IUnitOfWork unitOfWork, IMapper mapper) : IRegisterExpenseUseCase
 {
-    public async Task<ResponseRegisteredExpense> Execute(RequestRegisterExpense expense)
+    public async Task<ResponseRegisteredExpense> Execute(RequestExpense expense)
     {
         Validate(expense);
 
@@ -22,9 +22,9 @@ public class RegisterExpenseUseCase(IExpensesRepository expensesRepository, IUni
         return mapper.Map<ResponseRegisteredExpense>(entity);
     }
 
-    private static void Validate(RequestRegisterExpense expense)
+    private static void Validate(RequestExpense expense)
     {
-        var validator = new RegisterExpenseValidator();
+        var validator = new ExpenseValidator();
         var result = validator.Validate(expense);
 
         if (!result.IsValid)

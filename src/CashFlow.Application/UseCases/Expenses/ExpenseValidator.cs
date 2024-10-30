@@ -3,9 +3,9 @@ using CashFlow.Exception;
 using FluentValidation;
 
 namespace CashFlow.Application.UseCases.Expenses.Register;
-public class RegisterExpenseValidator : AbstractValidator<RequestRegisterExpense>
+public class ExpenseValidator : AbstractValidator<RequestExpense>
 {
-    public RegisterExpenseValidator()
+    public ExpenseValidator()
     {
         RuleFor(registerExpense => registerExpense.Title)
             .NotEmpty()

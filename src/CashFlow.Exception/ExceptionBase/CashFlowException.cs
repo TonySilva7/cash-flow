@@ -4,6 +4,9 @@ namespace CashFlow.Exception.ExceptionBase;
 
 public abstract class CashFlowException : SystemException
 {
+    public abstract int StatuCode { get; }
+    public abstract List<string> GetErrors();
+
     public CashFlowException()
     {
     }

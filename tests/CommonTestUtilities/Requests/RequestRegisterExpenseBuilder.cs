@@ -5,9 +5,9 @@ using CashFlow.Communication.Requests;
 namespace CommonTestUtilities.Requests;
 public class RequestRegisterExpenseBuilder
 {
-    public static RequestRegisterExpense Build()
+    public static RequestExpense Build()
     {
-        var request = new Faker<RequestRegisterExpense>("pt_BR")
+        var request = new Faker<RequestExpense>("pt_BR")
             .RuleFor(r => r.Title, (faker) => faker.Commerce.ProductName())
             .RuleFor(r => r.Amount, (faker) => Math.Round(faker.Random.Decimal(1, 1000), 2))
             .RuleFor(r => r.Date, (faker) => faker.Date.Past())

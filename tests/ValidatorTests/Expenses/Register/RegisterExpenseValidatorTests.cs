@@ -13,7 +13,7 @@ public class RegisterExpenseValidatorTests
     {
         // Arrange
         var request = RequestRegisterExpenseBuilder.Build();
-        var validator = new RegisterExpenseValidator();
+        var validator = new ExpenseValidator();
 
         // Act
         var result = validator.Validate(request);
@@ -28,7 +28,7 @@ public class RegisterExpenseValidatorTests
         // Arrange
         var request = RequestRegisterExpenseBuilder.Build();
         request.Title = string.Empty;
-        var validator = new RegisterExpenseValidator();
+        var validator = new ExpenseValidator();
 
         // Act
         var result = validator.Validate(request);
@@ -47,7 +47,7 @@ public class RegisterExpenseValidatorTests
         // Arrange
         var request = RequestRegisterExpenseBuilder.Build();
         request.Amount = 0;
-        var validator = new RegisterExpenseValidator();
+        var validator = new ExpenseValidator();
 
         // Act
         var result = validator.Validate(request);
@@ -69,7 +69,7 @@ public class RegisterExpenseValidatorTests
         // Arrange
         var request = RequestRegisterExpenseBuilder.Build();
         request.Amount = amount;
-        var validator = new RegisterExpenseValidator();
+        var validator = new ExpenseValidator();
 
         // Act
         var result = validator.Validate(request);

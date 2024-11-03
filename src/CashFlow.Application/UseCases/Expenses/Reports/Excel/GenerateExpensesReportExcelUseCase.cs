@@ -1,4 +1,6 @@
 using System;
+using CashFlow.Domain.Entities;
+using CashFlow.Domain.Enums;
 using CashFlow.Domain.Repositories.Expenses;
 using ClosedXML.Excel;
 
@@ -14,7 +16,7 @@ public class GenerateExpensesReportExcelUseCase(IExpensesReadOnlyRepository repo
             return [];
         }
 
-        var workbook = new XLWorkbook(); // cira como se fosse uma planilha do excel
+        using var workbook = new XLWorkbook(); // cira como se fosse uma planilha do excel
 
         // configurações gerais do arquivo
         workbook.Author = "CashFlow";
@@ -26,6 +28,21 @@ public class GenerateExpensesReportExcelUseCase(IExpensesReadOnlyRepository repo
 
         // Deifnição das colunas/céluas de cabeçalho
         InsertHeader(worksheet);
+
+        var raw = 2;
+        foreach (var registered in expenses)
+        {
+            worksheet.Cell($"A{raw}").Value = registered.Title;
+            worksheet.Cell($"B{raw}").Value = registered.Date;
+            worksheet.Cell($"C{raw}").Value = ConvertType(registered.PaymentType);
+
+            worksheet.Cell($"D{raw}").Style.NumberFormat.Format = "-R$ #,##0.00"; // formatação de moeda
+            worksheet.Cell($"D{raw}").Value = registered.Amount;
+
+            worksheet.Cell($"E{raw}").Value = registered.Description;
+
+            raw++;
+        }
 
         worksheet.Columns().AdjustToContents();
 
@@ -51,5 +68,18 @@ public class GenerateExpensesReportExcelUseCase(IExpensesReadOnlyRepository repo
         // worksheet.Cells("A1:E1").Style.Fill.BackgroundColor = XLColor.LightGray;
         worksheet.Cells("A1:E1").Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
         // worksheet.Cells("A1:E1").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+    }
+
+    private static string ConvertType(PaymentType type)
+    {
+        // TO-DO: Crie depois um resouce file para mapear esses valores em difernetes idiomas
+        return type switch
+        {
+            PaymentType.Cash => "Money",
+            PaymentType.CreditCard => "Credit Card",
+            PaymentType.DebitCard => "Debit Card",
+            PaymentType.EletronicTransfer => "Eletronic Transfer",
+            _ => "Unknown"
+        };
     }
 }
